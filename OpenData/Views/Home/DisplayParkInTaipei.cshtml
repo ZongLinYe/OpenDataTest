@@ -1,0 +1,161 @@
+﻿@model IEnumerable<OpenData.Models.Park>
+
+@{
+    ViewData["Title"] = "DisplayParkInTaipei";
+}
+
+<h1>DisplayParkInTaipei</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Index)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.公園名稱)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.行政區)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.管理單位)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.組合遊具數量)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.磨石滑梯數量)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.鞦韆數量)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.翹翹板數量)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.搖搖樂數量)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.攀爬組數量)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.戲沙坑數量)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.擺盪船索數量)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.其他數量)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.X坐標)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Y坐標)
+            </th>
+   @*         <th>
+                @Html.DisplayNameFor(model => model.JSON)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.公園名稱)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.行政區)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.管理單位)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.組合遊具數量)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.磨石滑梯數量)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.鞦韆數量)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.翹翹板數量)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.搖搖樂數量)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.攀爬組數量)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.戲沙坑數量)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.擺盪船索數量)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.其他數量)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.X坐標)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Y坐標)
+            </td>
+      @*      <td>
+                @Html.DisplayFor(modelItem => item.JSON)
+            </td>*@
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+          @*      @Html.ActionLink("Delete", "Delete", new { jsonData=item.JSON, id=item.Index /* id=item.PrimaryKey */ },new{@class="delete-btn"})*@
+                    <button jsonData="@item.JSON" id="@item.Index" class="delete-btn">刪除</button>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script>
+    const deleteBtnsDom = document.querySelectorAll('.delete-btn');
+
+    window.onload = function(){
+        deleteBtnsDom.forEach((x)=>{
+            x.onclick  = function(e){
+                deleteEvent(e);
+            }
+        })
+    }
+
+    function deleteEvent(e){
+        debugger;
+        const deleteBtn = e.currentTarget;
+        let jsonDataString = deleteBtn.getAttribute('jsonData');
+        let idString = deleteBtn.getAttribute('id');
+
+        let jsonData = JSON.parse(jsonDataString);
+        console.log(jsonData);
+        //const id = e.target.dataset.id;
+        const url = `/Home/DeleteParkInTaipei?jsonData=${jsonDataString}&id=${idString}`;
+        fetch(url,{
+            method:'DELETE'
+        }).then((res)=>{
+            debugger;   
+            let resStatus = res.status;
+
+            if(res.status === 204){
+                alert('刪除成功');
+                window.location.reload();
+            }
+        })
+    }
+</script>
